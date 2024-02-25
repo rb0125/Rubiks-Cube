@@ -6,13 +6,6 @@ public class App
         System.out.println(cube.isSolved());
         System.out.println(cube.getOrientation());
 
-        cube.x();
-        System.out.println(cube.isSolved());
-        System.out.println(cube.getOrientation());
-        cube.undo();
-        System.out.println(cube.isSolved());
-        System.out.println(cube.getOrientation());
-
         // for (int i = 0; i < 4; i ++)
         // {
         //     cube.b();

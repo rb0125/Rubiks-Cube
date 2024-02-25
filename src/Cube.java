@@ -4,83 +4,19 @@ import java.util.Stack;
 public class Cube
 {
     private Piece[] pieces;
-    private Piece w, y, g, b, r, o, wg, wr, wb, wo, gr, rb, bo, og, yg, yr, yb, yo, wgr, wrb, wbo, wog, ygr, yrb, ybo, yog;
-    private String colorScheme, orientation;
     private Stack<String> undo, redo;
+    private String colorScheme, orientation;
 
-    public Cube()
-    {
-        w = new Piece("W", new String[][]{{"W", "+y"}}, new int[]{0, 1, 0});
-        y = new Piece("Y", new String[][]{{"Y", "-y"}}, new int[]{0, -1, 0});
-        g = new Piece("G", new String[][]{{"G", "+z"}}, new int[]{0, 0, 1});
-        b = new Piece("B", new String[][]{{"B", "-z"}}, new int[]{0, 0, -1});
-        r = new Piece("R", new String[][]{{"R", "+x"}}, new int[]{1, 0, 0});
-        o = new Piece("O", new String[][]{{"O", "-x"}}, new int[]{-1, 0, 0});
-        wg = new Piece("WG", new String[][]{{"W", "+y"}, {"G", "+z"}}, new int[]{0, 1, 1});
-        wr = new Piece("WR", new String[][]{{"W", "+y"}, {"R", "+x"}}, new int[]{1, 1, 0});
-        wb = new Piece("WB", new String[][]{{"W", "+y"}, {"B", "-z"}}, new int[]{0, 1, -1});
-        wo = new Piece("WO", new String[][]{{"W", "+y"}, {"O", "-x"}}, new int[]{-1, 1, 0});
-        gr = new Piece("GR", new String[][]{{"G", "+z"}, {"R", "+x"}}, new int[]{1, 0, 1});
-        rb = new Piece("RB", new String[][]{{"R", "+x"}, {"B", "-z"}}, new int[]{1, 0, -1});
-        bo = new Piece("BO", new String[][]{{"B", "-z"}, {"O", "-x"}}, new int[]{-1, 0, -1});
-        og = new Piece("OG", new String[][]{{"O", "-x"}, {"G", "+z"}}, new int[]{-1, 0, 1});
-        yg = new Piece("YG", new String[][]{{"Y", "-y"}, {"G", "+z"}}, new int[]{0, -1, 1});
-        yr = new Piece("YR", new String[][]{{"Y", "-y"}, {"R", "+x"}}, new int[]{1, -1, 0});
-        yb = new Piece("YB", new String[][]{{"Y", "-y"}, {"B", "-z"}}, new int[]{0, -1, -1});
-        yo = new Piece("YO", new String[][]{{"Y", "-y"}, {"O", "-x"}}, new int[]{-1, -1, 0});
-        wgr = new Piece("WGR", new String[][]{{"W", "+y"}, {"G", "+z"}, {"R", "+x"}}, new int[]{1, 1, 1});
-        wrb = new Piece("WRB", new String[][]{{"W", "+y"}, {"R", "+x"}, {"B", "-z"}}, new int[]{1, 1, -1});
-        wbo = new Piece("WBO", new String[][]{{"W", "+y"}, {"B", "-z"}, {"O", "-x"}}, new int[]{-1, 1, -1});
-        wog = new Piece("WOG", new String[][]{{"W", "+y"}, {"O", "-x"}, {"G", "+z"}}, new int[]{-1, 1, 1});
-        ygr = new Piece("YGR", new String[][]{{"Y", "-y"}, {"G", "+z"}, {"R", "+x"}}, new int[]{1, -1, 1});
-        yrb = new Piece("YRB", new String[][]{{"Y", "-y"}, {"R", "+x"}, {"B", "-z"}}, new int[]{1, -1, -1});
-        ybo = new Piece("YBO", new String[][]{{"Y", "-y"}, {"B", "-z"}, {"O", "-x"}}, new int[]{-1, -1, -1});
-        yog = new Piece("YOG", new String[][]{{"Y", "-y"}, {"O", "-x"}, {"G", "+z"}}, new int[]{-1, -1, 1});
+    public Cube()   {   initialize();   }
 
-        pieces = new Piece[]{w, y, g, b, r, o, wg, wr, wb, wo, gr, rb, bo, og, yg, yr, yb, yo, wgr, wrb, wbo, wog, ygr, yrb, ybo, yog};
-        colorScheme = "WGRYBO";
-        orientation = "WG";
-        undo = new Stack<>();
-        redo = new Stack<>();
-    }
-
-    public Piece[] getPieces() {   return pieces;  }
     public String getColorScheme() {   return colorScheme; }
     public String getOrientation() {   return orientation; }
-
-    public boolean isSolved()
-    {
-        boolean solved = true;
-        String oldOrientation = orientation;
-        setOrientation("WG");
-        solved = solved && (Arrays.deepEquals(w.getColors(), new String[][]{{"W", "+y"}}) && Arrays.equals(w.getCoordinates(), new int[]{0, 1, 0}));
-        solved = solved && (Arrays.deepEquals(y.getColors(), new String[][]{{"Y", "-y"}}) && Arrays.equals(y.getCoordinates(), new int[]{0, -1, 0}));
-        solved = solved && (Arrays.deepEquals(g.getColors(), new String[][]{{"G", "+z"}}) && Arrays.equals(g.getCoordinates(), new int[]{0, 0, 1}));
-        solved = solved && (Arrays.deepEquals(b.getColors(), new String[][]{{"B", "-z"}}) && Arrays.equals(b.getCoordinates(), new int[]{0, 0, -1}));
-        solved = solved && (Arrays.deepEquals(r.getColors(), new String[][]{{"R", "+x"}}) && Arrays.equals(r.getCoordinates(), new int[]{1, 0, 0}));
-        solved = solved && (Arrays.deepEquals(o.getColors(), new String[][]{{"O", "-x"}}) && Arrays.equals(o.getCoordinates(), new int[]{-1, 0, 0}));
-        solved = solved && (Arrays.deepEquals(wg.getColors(), new String[][]{{"W", "+y"}, {"G", "+z"}}) && Arrays.equals(wg.getCoordinates(), new int[]{0, 1, 1}));
-        solved = solved && (Arrays.deepEquals(wr.getColors(), new String[][]{{"W", "+y"}, {"R", "+x"}}) && Arrays.equals(wr.getCoordinates(), new int[]{1, 1, 0}));
-        solved = solved && (Arrays.deepEquals(wb.getColors(), new String[][]{{"W", "+y"}, {"B", "-z"}}) && Arrays.equals(wb.getCoordinates(), new int[]{0, 1, -1}));
-        solved = solved && (Arrays.deepEquals(wo.getColors(), new String[][]{{"W", "+y"}, {"O", "-x"}}) && Arrays.equals(wo.getCoordinates(), new int[]{-1, 1, 0}));
-        solved = solved && (Arrays.deepEquals(gr.getColors(), new String[][]{{"G", "+z"}, {"R", "+x"}}) && Arrays.equals(gr.getCoordinates(), new int[]{1, 0, 1}));
-        solved = solved && (Arrays.deepEquals(rb.getColors(), new String[][]{{"R", "+x"}, {"B", "-z"}}) && Arrays.equals(rb.getCoordinates(), new int[]{1, 0, -1}));
-        solved = solved && (Arrays.deepEquals(bo.getColors(), new String[][]{{"B", "-z"}, {"O", "-x"}}) && Arrays.equals(bo.getCoordinates(), new int[]{-1, 0, -1}));
-        solved = solved && (Arrays.deepEquals(og.getColors(), new String[][]{{"O", "-x"}, {"G", "+z"}}) && Arrays.equals(og.getCoordinates(), new int[]{-1, 0, 1}));
-        solved = solved && (Arrays.deepEquals(yg.getColors(), new String[][]{{"Y", "-y"}, {"G", "+z"}}) && Arrays.equals(yg.getCoordinates(), new int[]{0, -1, 1}));
-        solved = solved && (Arrays.deepEquals(yr.getColors(), new String[][]{{"Y", "-y"}, {"R", "+x"}}) && Arrays.equals(yr.getCoordinates(), new int[]{1, -1, 0}));
-        solved = solved && (Arrays.deepEquals(yb.getColors(), new String[][]{{"Y", "-y"}, {"B", "-z"}}) && Arrays.equals(yb.getCoordinates(), new int[]{0, -1, -1}));
-        solved = solved && (Arrays.deepEquals(yo.getColors(), new String[][]{{"Y", "-y"}, {"O", "-x"}}) && Arrays.equals(yo.getCoordinates(), new int[]{-1, -1, 0}));
-        solved = solved && (Arrays.deepEquals(wgr.getColors(), new String[][]{{"W", "+y"}, {"G", "+z"}, {"R", "+x"}}) && Arrays.equals(wgr.getCoordinates(), new int[]{1, 1, 1}));
-        solved = solved && (Arrays.deepEquals(wrb.getColors(), new String[][]{{"W", "+y"}, {"R", "+x"}, {"B", "-z"}}) && Arrays.equals(wrb.getCoordinates(), new int[]{1, 1, -1}));
-        solved = solved && (Arrays.deepEquals(wbo.getColors(), new String[][]{{"W", "+y"}, {"B", "-z"}, {"O", "-x"}}) && Arrays.equals(wbo.getCoordinates(), new int[]{-1, 1, -1}));
-        solved = solved && (Arrays.deepEquals(wog.getColors(), new String[][]{{"W", "+y"}, {"O", "-x"}, {"G", "+z"}}) && Arrays.equals(wog.getCoordinates(), new int[]{-1, 1, 1}));
-        solved = solved && (Arrays.deepEquals(ygr.getColors(), new String[][]{{"Y", "-y"}, {"G", "+z"}, {"R", "+x"}}) && Arrays.equals(ygr.getCoordinates(), new int[]{1, -1, 1}));
-        solved = solved && (Arrays.deepEquals(yrb.getColors(), new String[][]{{"Y", "-y"}, {"R", "+x"}, {"B", "-z"}}) && Arrays.equals(yrb.getCoordinates(), new int[]{1, -1, -1}));
-        solved = solved && (Arrays.deepEquals(ybo.getColors(), new String[][]{{"Y", "-y"}, {"B", "-z"}, {"O", "-x"}}) && Arrays.equals(ybo.getCoordinates(), new int[]{-1, -1, -1}));
-        solved = solved && (Arrays.deepEquals(yog.getColors(), new String[][]{{"Y", "-y"}, {"O", "-x"}, {"G", "+z"}}) && Arrays.equals(yog.getCoordinates(), new int[]{-1, -1, 1}));
-        setOrientation(oldOrientation);
-        return solved;
+    public Piece getPiece(String name)
+    {   
+        for (Piece piece: pieces)
+            if (piece.getName().equals(name))
+                return piece;
+        return null;
     }
 
     public boolean setOrientation(String newOrientation)
@@ -114,6 +50,26 @@ public class Cube
             }
         }
         return true;
+    }
+
+    public boolean undo()
+    {
+        if (undo.isEmpty())
+            return false;
+        String move = undo.pop();
+        redo.push(move);
+        if (move.contains("'"))
+            move = move.replace("'", "");
+        else if (!move.contains("2"))
+            move += "'";
+        move(move);
+        undo.pop();
+        return true;
+    }
+
+    public void reset()
+    {
+        initialize();
     }
 
     public boolean move(String moves)
@@ -242,19 +198,76 @@ public class Cube
         return true;
     }
 
-    public boolean undo()
+    private void initialize()
     {
-        if (undo.isEmpty())
-            return false;
-        String move = undo.pop();
-        redo.push(move);
-        if (move.contains("'"))
-            move = move.replace("'", "");
-        else if (!move.contains("2"))
-            move += "'";
-        move(move);
-        undo.pop();
-        return true;
+        pieces = new Piece[] {
+            new Piece("W", new String[][]{{"W", "+y"}}, new int[]{0, 1, 0}),
+            new Piece("Y", new String[][]{{"Y", "-y"}}, new int[]{0, -1, 0}),
+            new Piece("G", new String[][]{{"G", "+z"}}, new int[]{0, 0, 1}),
+            new Piece("B", new String[][]{{"B", "-z"}}, new int[]{0, 0, -1}),
+            new Piece("R", new String[][]{{"R", "+x"}}, new int[]{1, 0, 0}),
+            new Piece("O", new String[][]{{"O", "-x"}}, new int[]{-1, 0, 0}),
+            new Piece("WG", new String[][]{{"W", "+y"}, {"G", "+z"}}, new int[]{0, 1, 1}),
+            new Piece("WR", new String[][]{{"W", "+y"}, {"R", "+x"}}, new int[]{1, 1, 0}),
+            new Piece("WB", new String[][]{{"W", "+y"}, {"B", "-z"}}, new int[]{0, 1, -1}),
+            new Piece("WO", new String[][]{{"W", "+y"}, {"O", "-x"}}, new int[]{-1, 1, 0}),
+            new Piece("GR", new String[][]{{"G", "+z"}, {"R", "+x"}}, new int[]{1, 0, 1}),
+            new Piece("RB", new String[][]{{"R", "+x"}, {"B", "-z"}}, new int[]{1, 0, -1}),
+            new Piece("BO", new String[][]{{"B", "-z"}, {"O", "-x"}}, new int[]{-1, 0, -1}),
+            new Piece("OG", new String[][]{{"O", "-x"}, {"G", "+z"}}, new int[]{-1, 0, 1}),
+            new Piece("YG", new String[][]{{"Y", "-y"}, {"G", "+z"}}, new int[]{0, -1, 1}),
+            new Piece("YR", new String[][]{{"Y", "-y"}, {"R", "+x"}}, new int[]{1, -1, 0}),
+            new Piece("YB", new String[][]{{"Y", "-y"}, {"B", "-z"}}, new int[]{0, -1, -1}),
+            new Piece("YO", new String[][]{{"Y", "-y"}, {"O", "-x"}}, new int[]{-1, -1, 0}),
+            new Piece("WGR", new String[][]{{"W", "+y"}, {"G", "+z"}, {"R", "+x"}}, new int[]{1, 1, 1}),
+            new Piece("WRB", new String[][]{{"W", "+y"}, {"R", "+x"}, {"B", "-z"}}, new int[]{1, 1, -1}),
+            new Piece("WBO", new String[][]{{"W", "+y"}, {"B", "-z"}, {"O", "-x"}}, new int[]{-1, 1, -1}),
+            new Piece("WOG", new String[][]{{"W", "+y"}, {"O", "-x"}, {"G", "+z"}}, new int[]{-1, 1, 1}),
+            new Piece("YGR", new String[][]{{"Y", "-y"}, {"G", "+z"}, {"R", "+x"}}, new int[]{1, -1, 1}),
+            new Piece("YRB", new String[][]{{"Y", "-y"}, {"R", "+x"}, {"B", "-z"}}, new int[]{1, -1, -1}),
+            new Piece("YBO", new String[][]{{"Y", "-y"}, {"B", "-z"}, {"O", "-x"}}, new int[]{-1, -1, -1}),
+            new Piece("YOG", new String[][]{{"Y", "-y"}, {"O", "-x"}, {"G", "+z"}}, new int[]{-1, -1, 1})
+        };
+
+        colorScheme = "WGRYBO";
+        orientation = "WG";
+        undo = new Stack<>();
+        redo = new Stack<>();
+    }
+
+    public boolean isSolved()
+    {
+        boolean solved = true;
+        String oldOrientation = orientation;
+        setOrientation("WG");
+        solved = solved && (Arrays.deepEquals(pieces[0].getColors(), new String[][]{{"W", "+y"}}) && Arrays.equals(pieces[0].getCoordinates(), new int[]{0, 1, 0}));
+        solved = solved && (Arrays.deepEquals(pieces[1].getColors(), new String[][]{{"Y", "-y"}}) && Arrays.equals(pieces[1].getCoordinates(), new int[]{0, -1, 0}));
+        solved = solved && (Arrays.deepEquals(pieces[2].getColors(), new String[][]{{"G", "+z"}}) && Arrays.equals(pieces[2].getCoordinates(), new int[]{0, 0, 1}));
+        solved = solved && (Arrays.deepEquals(pieces[3].getColors(), new String[][]{{"B", "-z"}}) && Arrays.equals(pieces[3].getCoordinates(), new int[]{0, 0, -1}));
+        solved = solved && (Arrays.deepEquals(pieces[4].getColors(), new String[][]{{"R", "+x"}}) && Arrays.equals(pieces[4].getCoordinates(), new int[]{1, 0, 0}));
+        solved = solved && (Arrays.deepEquals(pieces[5].getColors(), new String[][]{{"O", "-x"}}) && Arrays.equals(pieces[5].getCoordinates(), new int[]{-1, 0, 0}));
+        solved = solved && (Arrays.deepEquals(pieces[6].getColors(), new String[][]{{"W", "+y"}, {"G", "+z"}}) && Arrays.equals(pieces[6].getCoordinates(), new int[]{0, 1, 1}));
+        solved = solved && (Arrays.deepEquals(pieces[7].getColors(), new String[][]{{"W", "+y"}, {"R", "+x"}}) && Arrays.equals(pieces[7].getCoordinates(), new int[]{1, 1, 0}));
+        solved = solved && (Arrays.deepEquals(pieces[8].getColors(), new String[][]{{"W", "+y"}, {"B", "-z"}}) && Arrays.equals(pieces[8].getCoordinates(), new int[]{0, 1, -1}));
+        solved = solved && (Arrays.deepEquals(pieces[9].getColors(), new String[][]{{"W", "+y"}, {"O", "-x"}}) && Arrays.equals(pieces[9].getCoordinates(), new int[]{-1, 1, 0}));
+        solved = solved && (Arrays.deepEquals(pieces[10].getColors(), new String[][]{{"G", "+z"}, {"R", "+x"}}) && Arrays.equals(pieces[10].getCoordinates(), new int[]{1, 0, 1}));
+        solved = solved && (Arrays.deepEquals(pieces[11].getColors(), new String[][]{{"R", "+x"}, {"B", "-z"}}) && Arrays.equals(pieces[11].getCoordinates(), new int[]{1, 0, -1}));
+        solved = solved && (Arrays.deepEquals(pieces[12].getColors(), new String[][]{{"B", "-z"}, {"O", "-x"}}) && Arrays.equals(pieces[12].getCoordinates(), new int[]{-1, 0, -1}));
+        solved = solved && (Arrays.deepEquals(pieces[13].getColors(), new String[][]{{"O", "-x"}, {"G", "+z"}}) && Arrays.equals(pieces[13].getCoordinates(), new int[]{-1, 0, 1}));
+        solved = solved && (Arrays.deepEquals(pieces[14].getColors(), new String[][]{{"Y", "-y"}, {"G", "+z"}}) && Arrays.equals(pieces[14].getCoordinates(), new int[]{0, -1, 1}));
+        solved = solved && (Arrays.deepEquals(pieces[15].getColors(), new String[][]{{"Y", "-y"}, {"R", "+x"}}) && Arrays.equals(pieces[15].getCoordinates(), new int[]{1, -1, 0}));
+        solved = solved && (Arrays.deepEquals(pieces[16].getColors(), new String[][]{{"Y", "-y"}, {"B", "-z"}}) && Arrays.equals(pieces[16].getCoordinates(), new int[]{0, -1, -1}));
+        solved = solved && (Arrays.deepEquals(pieces[17].getColors(), new String[][]{{"Y", "-y"}, {"O", "-x"}}) && Arrays.equals(pieces[17].getCoordinates(), new int[]{-1, -1, 0}));
+        solved = solved && (Arrays.deepEquals(pieces[18].getColors(), new String[][]{{"W", "+y"}, {"G", "+z"}, {"R", "+x"}}) && Arrays.equals(pieces[18].getCoordinates(), new int[]{1, 1, 1}));
+        solved = solved && (Arrays.deepEquals(pieces[19].getColors(), new String[][]{{"W", "+y"}, {"R", "+x"}, {"B", "-z"}}) && Arrays.equals(pieces[19].getCoordinates(), new int[]{1, 1, -1}));
+        solved = solved && (Arrays.deepEquals(pieces[20].getColors(), new String[][]{{"W", "+y"}, {"B", "-z"}, {"O", "-x"}}) && Arrays.equals(pieces[20].getCoordinates(), new int[]{-1, 1, -1}));
+        solved = solved && (Arrays.deepEquals(pieces[21].getColors(), new String[][]{{"W", "+y"}, {"O", "-x"}, {"G", "+z"}}) && Arrays.equals(pieces[21].getCoordinates(), new int[]{-1, 1, 1}));
+        solved = solved && (Arrays.deepEquals(pieces[22].getColors(), new String[][]{{"Y", "-y"}, {"G", "+z"}, {"R", "+x"}}) && Arrays.equals(pieces[22].getCoordinates(), new int[]{1, -1, 1}));
+        solved = solved && (Arrays.deepEquals(pieces[23].getColors(), new String[][]{{"Y", "-y"}, {"R", "+x"}, {"B", "-z"}}) && Arrays.equals(pieces[23].getCoordinates(), new int[]{1, -1, -1}));
+        solved = solved && (Arrays.deepEquals(pieces[24].getColors(), new String[][]{{"Y", "-y"}, {"B", "-z"}, {"O", "-x"}}) && Arrays.equals(pieces[24].getCoordinates(), new int[]{-1, -1, -1}));
+        solved = solved && (Arrays.deepEquals(pieces[25].getColors(), new String[][]{{"Y", "-y"}, {"O", "-x"}, {"G", "+z"}}) && Arrays.equals(pieces[25].getCoordinates(), new int[]{-1, -1, 1}));
+        setOrientation(oldOrientation);
+        return solved;
     }
 
     public void R()

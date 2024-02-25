@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Piece
 {
     private String name;
@@ -33,4 +35,6 @@ public class Piece
     public void setX(int xCoordinate) {   coordinates[0] = xCoordinate;   }
     public void setY(int yCoordinate) {   coordinates[1] = yCoordinate;   }
     public void setZ(int zCoordinate) {   coordinates[2] = zCoordinate;   }
+
+    public boolean equals(Piece other)  {   return name.equals(other.name) && Arrays.deepEquals(colors, other.colors) && Arrays.equals(coordinates, other.coordinates); }
 }
