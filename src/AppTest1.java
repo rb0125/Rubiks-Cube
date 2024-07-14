@@ -27,6 +27,7 @@ public class AppTest1
         cube.BPrime();
         cube.L2();
         cube.R2();
+        // cube.move("D2 U F2 U2 F2 R2 B2 U B2 F2 R2 U' L' B2 R D' L R' B' L2 R2");
         System.out.println(cube.isSolved());
 
         // Cross

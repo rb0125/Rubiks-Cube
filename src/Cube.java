@@ -23,31 +23,20 @@ public class Cube
     {
         if (newOrientation == null || newOrientation.length() != 2)
             return false;
-        char a = newOrientation.charAt(0), b = newOrientation.charAt(1), c;
+        char a = newOrientation.charAt(0), b = newOrientation.charAt(1);
         if (!colorScheme.contains("" + a) || !colorScheme.contains("" + b) || (colorScheme.indexOf("" + a) - colorScheme.indexOf("" + b))%3 == 0)
             return false;
+        char c;
         while ((c = orientation.charAt(0)) != a && c != b)
-        {
-            x();
-            undo.pop();
-        }
+            x(false);
         if (c == a)
-        {
             while (orientation.charAt(1) != b)
-            {
-                y();
-                undo.pop();
-            }
-        }
+                y(false);
         else
         {
-            xPrime();
-            undo.pop();
+            xPrime(false);
             while (orientation.charAt(0) != a)
-            {
-                z();
-                undo.pop();
-            }
+                z(false);
         }
         return true;
     }
@@ -74,120 +63,125 @@ public class Cube
 
     public boolean move(String moves)
     {
-        if (moves == null || moves.length() == 0)
+        if (moves == null)
+            return false;
+        if (moves.length() == 0)
+            return true;
+        moves = moves.trim().replaceAll(" {2,}", " ");
+        if (!moves.matches("([RUFLDBMESxyzrufldb][2']? )*[RUFLDBMESxyzrufldb][2']?"))
             return false;
         String[] moveStrings = moves.split(" ");
         for (int i = 0; i < moveStrings.length; i ++)
         {
             switch(moveStrings[i])
             {
-                case "R": R();
+                case "R": R(true);
                     break;
-                case "R'": RPrime();
+                case "R'": RPrime(true);
                     break;
-                case "R2": R2();
+                case "R2": R2(true);
                     break;
-                case "U": U();
+                case "U": U(true);
                     break;
-                case "U'": UPrime();
+                case "U'": UPrime(true);
                     break;
-                case "U2": U2();
+                case "U2": U2(true);
                     break;
-                case "F": F();
+                case "F": F(true);
                     break;
-                case "F'": FPrime();
+                case "F'": FPrime(true);
                     break;
-                case "F2": F2();
+                case "F2": F2(true);
                     break;
-                case "L": L();
+                case "L": L(true);
                     break;
-                case "L'": LPrime();
+                case "L'": LPrime(true);
                     break;
-                case "L2": L2();
+                case "L2": L2(true);
                     break;
-                case "D": D();
+                case "D": D(true);
                     break;
-                case "D'": DPrime();
+                case "D'": DPrime(true);
                     break;
-                case "D2": D2();
+                case "D2": D2(true);
                     break;
-                case "B": B();
+                case "B": B(true);
                     break;
-                case "B'": BPrime();
+                case "B'": BPrime(true);
                     break;
-                case "B2": B2();
+                case "B2": B2(true);
                     break;
-                case "M": M();
+                case "M": M(true);
                     break;
-                case "M'": MPrime();
+                case "M'": MPrime(true);
                     break;
-                case "M2": M2();
+                case "M2": M2(true);
                     break;
-                case "E": E();
+                case "E": E(true);
                     break;
-                case "E'": EPrime();
+                case "E'": EPrime(true);
                     break;
-                case "E2": E2();
+                case "E2": E2(true);
                     break;
-                case "S": S();
+                case "S": S(true);
                     break;
-                case "S'": SPrime();
+                case "S'": SPrime(true);
                     break;
-                case "S2": S2();
+                case "S2": S2(true);
                     break;
-                case "x": x();
+                case "x": x(true);
                     break;
-                case "x'": xPrime();
+                case "x'": xPrime(true);
                     break;
-                case "x2": x2();
+                case "x2": x2(true);
                     break;
-                case "y": y();
+                case "y": y(true);
                     break;
-                case "y'": yPrime();
+                case "y'": yPrime(true);
                     break;
-                case "y2": y2();
+                case "y2": y2(true);
                     break;
-                case "z": z();
+                case "z": z(true);
                     break;
-                case "z'": zPrime();
+                case "z'": zPrime(true);
                     break;
-                case "z2": z2();
+                case "z2": z2(true);
                     break;
-                case "r": r();
+                case "r": r(true);
                     break;
-                case "r'": rPrime();
+                case "r'": rPrime(true);
                     break;
-                case "r2": r2();
+                case "r2": r2(true);
                     break;
-                case "u": u();
+                case "u": u(true);
                     break;
-                case "u'": uPrime();
+                case "u'": uPrime(true);
                     break;
-                case "u2": u2();
+                case "u2": u2(true);
                     break;
-                case "f": f();
+                case "f": f(true);
                     break;
-                case "f'": fPrime();
+                case "f'": fPrime(true);
                     break;
-                case "f2": f2();
+                case "f2": f2(true);
                     break;
-                case "l": l();
+                case "l": l(true);
                     break;
-                case "l'": lPrime();
+                case "l'": lPrime(true);
                     break;
-                case "l2": l2();
+                case "l2": l2(true);
                     break;
-                case "d": d();
+                case "d": d(true);
                     break;
-                case "d'": dPrime();
+                case "d'": dPrime(true);
                     break;
-                case "d2": d2();
+                case "d2": d2(true);
                     break;
-                case "b": b();
+                case "b": b(true);
                     break;
-                case "b'": bPrime();
+                case "b'": bPrime(true);
                     break;
-                case "b2": b2();
+                case "b2": b2(true);
                     break;
                 default:
                     for (int j = 0; j < i; j ++)
@@ -270,7 +264,62 @@ public class Cube
         return solved;
     }
 
-    public void R()
+    public void R()         {   R(true);    }
+    public void RPrime()    {   RPrime(true);    }
+    public void R2()        {   R2(true);    }
+    public void U()         {   U(true);    }
+    public void UPrime()    {   UPrime(true);    }
+    public void U2()        {   U2(true);    }
+    public void F()         {   F(true);    }
+    public void FPrime()    {   FPrime(true);    }
+    public void F2()        {   F2(true);    }
+    public void L()         {   L(true);    }
+    public void LPrime()    {   LPrime(true);    }
+    public void L2()        {   L2(true);    }
+    public void D()         {   D(true);    }
+    public void DPrime()    {   DPrime(true);    }
+    public void D2()        {   D2(true);    }
+    public void B()         {   B(true);    }
+    public void BPrime()    {   BPrime(true);    }
+    public void B2()        {   B2(true);    }
+    public void M()         {   M(true);    }
+    public void MPrime()    {   MPrime(true);    }
+    public void M2()        {   M2(true);    }
+    public void E()         {   E(true);    }
+    public void EPrime()    {   EPrime(true);    }
+    public void E2()        {   E2(true);    }
+    public void S()         {   S(true);    }
+    public void SPrime()    {   SPrime(true);    }
+    public void S2()        {   S2(true);    }
+    public void x()         {   x(true);    }
+    public void xPrime()    {   xPrime(true);    }
+    public void x2()        {   x2(true);    }
+    public void y()         {   y(true);    }
+    public void yPrime()    {   yPrime(true);    }
+    public void y2()        {   y2(true);    }
+    public void z()         {   z(true);    }
+    public void zPrime()    {   zPrime(true);    }
+    public void z2()        {   z2(true);    }
+    public void r()         {   r(true);    }
+    public void rPrime()    {   rPrime(true);    }
+    public void r2()        {   r2(true);    }
+    public void u()         {   u(true);    }
+    public void uPrime()    {   uPrime(true);    }
+    public void u2()        {   u2(true);    }
+    public void f()         {   f(true);    }
+    public void fPrime()    {   fPrime(true);    }
+    public void f2()        {   f2(true);    }
+    public void l()         {   l(true);    }
+    public void lPrime()    {   lPrime(true);    }
+    public void l2()        {   l2(true);    }
+    public void d()         {   d(true);    }
+    public void dPrime()    {   dPrime(true);    }
+    public void d2()        {   d2(true);    }
+    public void b()         {   b(true);    }
+    public void bPrime()    {   bPrime(true);    }
+    public void b2()        {   b2(true);    }
+
+    private void R(boolean undoPush)
     {
         for (Piece piece: pieces)
         {
@@ -309,30 +358,27 @@ public class Cube
                 }
             }
         }
-        undo.push("R");
+        if (undoPush)
+            undo.push("R");
     }
 
-    public void RPrime()
+    private void RPrime(boolean undoPush)
     {
         for (int i = 0; i < 3; i ++)
-        {
-            R();
-            undo.pop();
-        }
-        undo.push("R'");
+            R(false);
+        if (undoPush)
+            undo.push("R'");
     }
 
-    public void R2()
+    private void R2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            R();
-            undo.pop();
-        }
-        undo.push("R2");
+            R(false);
+        if (undoPush)
+            undo.push("R2");
     }
 
-    public void U()
+    private void U(boolean undoPush)
     {
         for (Piece piece: pieces)
         {
@@ -371,30 +417,27 @@ public class Cube
                 }
             }
         }
-        undo.push("U");
+        if (undoPush)
+            undo.push("U");
     }
 
-    public void UPrime()
+    private void UPrime(boolean undoPush)
     {
         for (int i = 0; i < 3; i ++)
-        {
-            U();
-            undo.pop();
-        }
-        undo.push("U'");
+            U(false);
+        if (undoPush)
+            undo.push("U'");
     }
 
-    public void U2()
+    private void U2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            U();
-            undo.pop();
-        }
-        undo.push("U2");
+            U(false);
+        if (undoPush)
+            undo.push("U2");
     }
 
-    public void F()
+    private void F(boolean undoPush)
     {
         for (Piece piece: pieces)
         {
@@ -433,30 +476,27 @@ public class Cube
                 }
             }
         }
-        undo.push("F");
+        if (undoPush)
+            undo.push("F");
     }
 
-    public void FPrime()
+    private void FPrime(boolean undoPush)
     {
         for (int i = 0; i < 3; i ++)
-        {
-            F();
-            undo.pop();
-        }
-        undo.push("F'");
+            F(false);
+        if (undoPush)
+            undo.push("F'");
     }
 
-    public void F2()
+    private void F2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            F();
-            undo.pop();
-        }
-        undo.push("F2");
+            F(false);
+        if (undoPush)
+            undo.push("F2");
     }
 
-    public void L()
+    private void L(boolean undoPush)
     {
         for (Piece piece: pieces)
         {
@@ -495,30 +535,27 @@ public class Cube
                 }
             }
         }
-        undo.push("L");
+        if (undoPush)
+            undo.push("L");
     }
 
-    public void LPrime()
+    private void LPrime(boolean undoPush)
     {
         for (int i = 0; i < 3; i ++)
-        {
-            L();
-            undo.pop();
-        }
-        undo.push("L'");
+            L(false);
+        if (undoPush)
+            undo.push("L'");
     }
 
-    public void L2()
+    private void L2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            L();
-            undo.pop();
-        }
-        undo.push("L2");
+            L(false);
+        if (undoPush)
+            undo.push("L2");
     }
 
-    public void D()
+    private void D(boolean undoPush)
     {
         for (Piece piece: pieces)
         {
@@ -557,30 +594,27 @@ public class Cube
                 }
             }
         }
-        undo.push("D");
+        if (undoPush)
+            undo.push("D");
     }
 
-    public void DPrime()
+    private void DPrime(boolean undoPush)
     {
         for (int i = 0; i < 3; i ++)
-        {
-            D();
-            undo.pop();
-        }
-        undo.push("D'");
+            D(false);
+        if (undoPush)
+            undo.push("D'");
     }
 
-    public void D2()
+    private void D2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            D();
-            undo.pop();
-        }
-        undo.push("D2");
+            D(false);
+        if (undoPush)
+            undo.push("D2");
     }
 
-    public void B()
+    private void B(boolean undoPush)
     {
         for (Piece piece: pieces)
         {
@@ -619,30 +653,27 @@ public class Cube
                 }
             }
         }
-        undo.push("B");
+        if (undoPush)
+            undo.push("B");
     }
 
-    public void BPrime()
+    private void BPrime(boolean undoPush)
     {
         for (int i = 0; i < 3; i ++)
-        {
-            B();
-            undo.pop();
-        }
-        undo.push("B'");
+            B(false);
+        if (undoPush)
+            undo.push("B'");
     }
 
-    public void B2()
+    private void B2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            B();
-            undo.pop();
-        }
-        undo.push("B2");
+            B(false);
+        if (undoPush)
+            undo.push("B2");
     }
 
-    public void M()
+    private void M(boolean undoPush)
     {
         for (Piece piece: pieces)
         {
@@ -682,30 +713,27 @@ public class Cube
             }
         }
         orientation = "" + colorScheme.charAt((colorScheme.indexOf(orientation.charAt(1)) + 3)%6) + orientation.charAt(0);
-        undo.push("M");
+        if (undoPush)
+            undo.push("M");
     }
 
-    public void MPrime()
+    private void MPrime(boolean undoPush)
     {
         for (int i = 0; i < 3; i ++)
-        {
-            M();
-            undo.pop();
-        }
-        undo.push("M'");
+            M(false);
+        if (undoPush)
+            undo.push("M'");
     }
 
-    public void M2()
+    private void M2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            M();
-            undo.pop();
-        }
-        undo.push("M2");
+            M(false);
+        if (undoPush)
+            undo.push("M2");
     }
 
-    public void E()
+    private void E(boolean undoPush)
     {
         for (Piece piece: pieces)
         {
@@ -746,30 +774,27 @@ public class Cube
         }
         String temp = colorScheme.replace("" + colorScheme.charAt((colorScheme.indexOf(orientation.charAt(0)) + 3)%6), "").replace("" + orientation.charAt(0), "");
         orientation = "" + orientation.charAt(0) + temp.charAt((temp.indexOf(orientation.charAt(1)) + 3 - 2*(colorScheme.indexOf(orientation.charAt(0))%2))%4);
-        undo.push("E");
+        if (undoPush)
+            undo.push("E");
     }
 
-    public void EPrime()
+    private void EPrime(boolean undoPush)
     {
         for (int i = 0; i < 3; i ++)
-        {
-            E();
-            undo.pop();
-        }
-        undo.push("E'");
+            E(false);
+        if (undoPush)
+            undo.push("E'");
     }
 
-    public void E2()
+    private void E2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            E();
-            undo.pop();
-        }
-        undo.push("E2");
+            E(false);
+        if (undoPush)
+            undo.push("E2");
     }
 
-    public void S()
+    private void S(boolean undoPush)
     {
         for (Piece piece: pieces)
         {
@@ -810,284 +835,245 @@ public class Cube
         }
         String temp = colorScheme.replace("" + colorScheme.charAt((colorScheme.indexOf(orientation.charAt(1)) + 3)%6), "").replace("" + orientation.charAt(1), "");
         orientation = "" + temp.charAt((temp.indexOf(orientation.charAt(0)) + 1 + 2*(colorScheme.indexOf(orientation.charAt(1))%2))%4) + orientation.charAt(1);
-        undo.push("S");
+        if (undoPush)
+            undo.push("S");
     }
 
-    public void SPrime()
+    private void SPrime(boolean undoPush)
     {
         for (int i = 0; i < 3; i ++)
-        {
-            S();
-            undo.pop();
-        }
-        undo.push("S'");
+            S(false);
+        if (undoPush)
+            undo.push("S'");
     }
 
-    public void S2()
+    private void S2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            S();
-            undo.pop();
-        }
-        undo.push("S2");
+            S(false);
+        if (undoPush)
+            undo.push("S2");
     }
 
-    public void x()
+    private void x(boolean undoPush)
     {
-        R();
-        MPrime();
-        LPrime();
-        for (int i = 0; i < 3; i ++)
-            undo.pop();
-        undo.push("x");
+        R(false);
+        MPrime(false);
+        LPrime(false);
+        if (undoPush)
+            undo.push("x");
     }
 
-    public void xPrime()
+    private void xPrime(boolean undoPush)
     {
-        RPrime();
-        M();
-        L();
-        for (int i = 0; i < 3; i ++)
-            undo.pop();
-        undo.push("x'");
+        RPrime(false);
+        M(false);
+        L(false);
+        if (undoPush)
+            undo.push("x'");
     }
 
-    public void x2()
+    private void x2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            x();
-            undo.pop();
-        }
-        undo.push("x2");
+            x(false);
+        if (undoPush)
+            undo.push("x2");
     }
 
-    public void y()
+    private void y(boolean undoPush)
     {
-        U();
-        EPrime();
-        DPrime();
-        for (int i = 0; i < 3; i ++)
-            undo.pop();
-        undo.push("y");
+        U(false);
+        EPrime(false);
+        DPrime(false);
+        if (undoPush)
+            undo.push("y");
     }
 
-    public void yPrime()
+    private void yPrime(boolean undoPush)
     {
-        UPrime();
-        E();
-        D();
-        for (int i = 0; i < 3; i ++)
-            undo.pop();
-        undo.push("y'");
+        UPrime(false);
+        E(false);
+        D(false);
+        if (undoPush)
+            undo.push("y'");
     }
 
-    public void y2()
+    private void y2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            y();
-            undo.pop();
-        }
-        undo.push("y2");
+            y(false);
+        if (undoPush)
+            undo.push("y2");
     }
 
-    public void z()
+    private void z(boolean undoPush)
     {
-        F();
-        S();
-        BPrime();
-        for (int i = 0; i < 3; i ++)
-            undo.pop();
-        undo.push("z");
+        F(false);
+        S(false);
+        BPrime(false);
+        if (undoPush)
+            undo.push("z");
     }
 
-    public void zPrime()
+    private void zPrime(boolean undoPush)
     {
-        FPrime();
-        SPrime();
-        B();
-        for (int i = 0; i < 3; i ++)
-            undo.pop();
-        undo.push("z'");
+        FPrime(false);
+        SPrime(false);
+        B(false);
+        if (undoPush)
+            undo.push("z'");
     }
 
-    public void z2()
+    private void z2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            z();
-            undo.pop();
-        }
-        undo.push("z2");
+            z(false);
+        if (undoPush)
+            undo.push("z2");
     }
 
-    public void r()
+    private void r(boolean undoPush)
     {
-        R();
-        MPrime();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("r");
+        R(false);
+        MPrime(false);
+        if (undoPush)
+            undo.push("r");
     }
 
-    public void rPrime()
+    private void rPrime(boolean undoPush)
     {
-        RPrime();
-        M();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("r'");
+        RPrime(false);
+        M(false);
+        if (undoPush)
+            undo.push("r'");
     }
 
-    public void r2()
+    private void r2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            r();
-            undo.pop();
-        }
-        undo.push("r2");
+            r(false);
+        if (undoPush)
+            undo.push("r2");
     }
 
-    public void u()
+    private void u(boolean undoPush)
     {
-        U();
-        EPrime();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("u");
+        U(false);
+        EPrime(false);
+        if (undoPush)
+            undo.push("u");
     }
     
-    public void uPrime()
+    private void uPrime(boolean undoPush)
     {
-        UPrime();
-        E();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("u'");
+        UPrime(false);
+        E(false);
+        if (undoPush)
+            undo.push("u'");
     }
 
-    public void u2()
+    private void u2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            u();
-            undo.pop();
-        }
-        undo.push("u2");
+            u(false);
+        if (undoPush)
+            undo.push("u2");
     }
 
-    public void f()
+    private void f(boolean undoPush)
     {
-        F();
-        S();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("f");
+        F(false);
+        S(false);
+        if (undoPush)
+            undo.push("f");
     }
 
-    public void fPrime()
+    private void fPrime(boolean undoPush)
     {
-        FPrime();
-        SPrime();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("f'");
+        FPrime(false);
+        SPrime(false);
+        if (undoPush)
+            undo.push("f'");
     }
 
-    public void f2()
+    private void f2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {    
-            f();
-            undo.pop();
-        }
-        undo.push("f2");
+            f(false);
+        if (undoPush)
+            undo.push("f2");
     }
 
-    public void l()
+    private void l(boolean undoPush)
     {
-        L();
-        M();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("l");
+        L(false);
+        M(false);
+        if (undoPush)
+            undo.push("l");
     }
 
-    public void lPrime()
+    private void lPrime(boolean undoPush)
     {
-        LPrime();
-        MPrime();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("l'");
+        LPrime(false);
+        MPrime(false);
+        if (undoPush)
+            undo.push("l'");
     }
 
-    public void l2()
+    private void l2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            l();
-            undo.pop();
-        }
-        undo.push("l2");
+            l(false);
+        if (undoPush)
+            undo.push("l2");
     }
 
-    public void d()
+    private void d(boolean undoPush)
     {
-        D();
-        E();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("d");
+        D(false);
+        E(false);
+        if (undoPush)
+            undo.push("d");
     }
 
-    public void dPrime()
+    private void dPrime(boolean undoPush)
     {
-        DPrime();
-        EPrime();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("d'");
+        DPrime(false);
+        EPrime(false);
+        if (undoPush)
+            undo.push("d'");
     }
 
-    public void d2()
+    private void d2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            d();
-            undo.pop();
-        }
-        undo.push("d2");
+            d(false);
+        if (undoPush)
+            undo.push("d2");
     }
 
-    public void b()
+    private void b(boolean undoPush)
     {
-        B();
-        SPrime();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("b");
+        B(false);
+        SPrime(false);
+        if (undoPush)
+            undo.push("b");
     }
 
-    public void bPrime()
+    private void bPrime(boolean undoPush)
     {
-        BPrime();
-        S();
-        for (int i = 0; i < 2; i ++)
-            undo.pop();
-        undo.push("b'");
+        BPrime(false);
+        S(false);
+        if (undoPush)
+            undo.push("b'");
     }
 
-    public void b2()
+    private void b2(boolean undoPush)
     {
         for (int i = 0; i < 2; i ++)
-        {
-            b();
-            undo.pop();
-        }
-        undo.push("b2");
+            b(false);
+        if (undoPush)
+            undo.push("b2");
     }
 }
