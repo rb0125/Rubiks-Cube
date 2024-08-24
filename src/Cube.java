@@ -3,6 +3,7 @@ import java.util.Stack;
 
 public class Cube
 {
+    // Potentially make HashMap
     private Piece[] pieces;
     private Stack<String> undo, redo;
     private String colorScheme, orientation;
@@ -11,6 +12,7 @@ public class Cube
 
     public String getColorScheme() {   return colorScheme; }
     public String getOrientation() {   return orientation; }
+    public Piece[] getPieces()      {   return pieces;  }
     public Piece getPiece(String name)
     {   
         for (Piece piece: pieces)
@@ -45,20 +47,26 @@ public class Cube
     {
         if (undo.isEmpty())
             return false;
-        String move = undo.pop();
-        redo.push(move);
-        if (move.contains("'"))
-            move = move.replace("'", "");
-        else if (!move.contains("2"))
-            move += "'";
-        move(move);
+        String undoMove = undo.pop();
+        redo.push(undoMove);
+        if (undoMove.contains("'"))
+            undoMove = undoMove.replace("'", "");
+        else if (!undoMove.contains("2"))
+            undoMove += "'";
+        move(undoMove);
         undo.pop();
         return true;
     }
 
-    public void reset()
+    public boolean redo()
     {
-        initialize();
+        if (redo.isEmpty())
+            return false;
+        String move = redo.pop();
+        undo.push(move);
+        move(move);
+        undo.pop();
+        return true;
     }
 
     public boolean move(String moves)
@@ -190,6 +198,11 @@ public class Cube
             }
         }
         return true;
+    }
+
+    public void reset()
+    {
+        initialize();
     }
 
     private void initialize()
