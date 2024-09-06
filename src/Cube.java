@@ -13,10 +13,19 @@ public class Cube
     public String getColorScheme() {   return colorScheme; }
     public String getOrientation() {   return orientation; }
     public Piece[] getPieces()      {   return pieces;  }
+
     public Piece getPiece(String name)
     {   
         for (Piece piece: pieces)
             if (piece.getName().equals(name))
+                return piece;
+        return null;
+    }
+
+    public Piece getPiece(int[] coordinates)
+    {
+        for (Piece piece: pieces)
+            if (Arrays.equals(piece.getCoordinates(), coordinates))
                 return piece;
         return null;
     }
@@ -785,8 +794,11 @@ public class Cube
                 }
             }
         }
-        String temp = colorScheme.replace("" + colorScheme.charAt((colorScheme.indexOf(orientation.charAt(0)) + 3)%6), "").replace("" + orientation.charAt(0), "");
-        orientation = "" + orientation.charAt(0) + temp.charAt((temp.indexOf(orientation.charAt(1)) + 3 - 2*(colorScheme.indexOf(orientation.charAt(0))%2))%4);
+        String topColor = "" + orientation.charAt(0), frontColor = "" + orientation.charAt(1);
+        String temp = colorScheme.replace("" + colorScheme.charAt((colorScheme.indexOf(topColor) + 3)%6), "").replace(topColor, "");
+        if (colorScheme.indexOf(frontColor)%2 == 1)
+            temp = new StringBuilder(temp).reverse().toString();
+        orientation = topColor + temp.charAt((temp.indexOf(frontColor) + 1)%4);
         if (undoPush)
             undo.push("E");
     }
@@ -846,8 +858,11 @@ public class Cube
                 }
             }
         }
-        String temp = colorScheme.replace("" + colorScheme.charAt((colorScheme.indexOf(orientation.charAt(1)) + 3)%6), "").replace("" + orientation.charAt(1), "");
-        orientation = "" + temp.charAt((temp.indexOf(orientation.charAt(0)) + 1 + 2*(colorScheme.indexOf(orientation.charAt(1))%2))%4) + orientation.charAt(1);
+        String topColor = "" + orientation.charAt(0), frontColor = "" + orientation.charAt(1);
+        String temp = colorScheme.replace("" + colorScheme.charAt((colorScheme.indexOf(frontColor) + 3)%6), "").replace(frontColor, "");
+        if (colorScheme.indexOf(frontColor)%2 == 1)
+            temp = new StringBuilder(temp).reverse().toString();
+        orientation = "" + temp.charAt((temp.indexOf(topColor) + 1)%4) + frontColor;
         if (undoPush)
             undo.push("S");
     }

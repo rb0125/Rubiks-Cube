@@ -7,20 +7,29 @@ import java.util.TimerTask;
 public class App extends JPanel implements KeyListener
 {
     Cube cube;
+    CubeSolver solver;
     Timer timer;
-    TimerTask task;
-    char prevKey = 0;
-    boolean taskScheduled;
+    TimerTask moveTask;
+    char prevKey;
+    long prevKeyTypedTime;
+    int frameX, frameY;
 
     public App()
     {
         cube = new Cube();
+        solver = new CubeSolver(cube);
         timer = new Timer();
-        taskScheduled = false;
+        prevKey = 0;
+        prevKeyTypedTime = 0;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frameX = (int) screenSize.getWidth();
+        frameY = (int) screenSize.getHeight();
+        // frameX = 1000;
+        // frameY = 600;
 
         JFrame frame = new JFrame();
         frame.add(this);
-        frame.setSize(1000, 600);
+        frame.setSize(frameX, frameY);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addKeyListener(this);
         frame.setVisible(true);
@@ -31,7 +40,9 @@ public class App extends JPanel implements KeyListener
         super.paintComponent(g);
         ((Graphics2D) g).setStroke(new BasicStroke(3));
         g.setColor(Color.BLACK);
-        int x = 300, y = 250, s = 300, r = (int) (s/Math.sqrt(2)/2);
+        int s = 300;
+        int x = (int) ((frameX - s)/2.0), y = 250;
+        // int r = (int) (s/Math.sqrt(2)/2);
 
         // Cabinet projection
         // g.drawRect(x, y, s, s);
@@ -63,8 +74,7 @@ public class App extends JPanel implements KeyListener
                 int py2 = pby(x, y, pX, pY - 1, s, bh);
 
                 Color color = null;
-                String[][] colors = piece.getColors();
-                for (String[] c: colors)
+                for (String[] c: piece.getColors())
                     if (c[1].equals("+z"))
                         color = getColor(c[0]);
                 
@@ -83,9 +93,8 @@ public class App extends JPanel implements KeyListener
                 int py1 = pty(x, y, pX, pZ, s, th);
                 int py2 = pty(x, y, pX, pZ - 1, s, th);
 
-                Color color = null;
-                String[][] colors = piece.getColors();
-                for (String[] c: colors)
+                Color color = Color.BLACK;
+                for (String[] c: piece.getColors())
                     if (c[1].equals("+y"))
                         color = getColor(c[0]);
 
@@ -131,51 +140,61 @@ public class App extends JPanel implements KeyListener
         }
     }
 
-    /* Do move 0.2s after key typed
-     * If same move typed within 0.2s append "2" (double move)
-     * If ' typed within 0.2s append ' (prime move)
-     * If different move typed within 0.2s do different move 0.2s after different key typed
+    /* Normal move: Do move 0.25s after key typed
+     * Double move: If same move typed within 0.25s, append "2" and do double move at originally scheduled time
+     * Prime move: If ' typed within 0.25s, append ' and do prime move at originally scheduled time
      */
     public void keyTyped(KeyEvent e)
     {
         char c = e.getKeyChar();
-        if ("RUFLDBMESxyzrufldb'".contains(c + ""))
+        if (c == ' ')
         {
-            if (taskScheduled && prevKey != '\'' && (c == prevKey || c == '\''))
-            {
-                task.cancel();
-                System.out.println(prevKey + (c == prevKey ? "2" : "'"));
-                cube.move(prevKey + (c == prevKey ? "2" : "'"));
-                repaint();
-                prevKey = c;
-                taskScheduled = false;
-            }
-            else if (c != '\'')
-            {
-                prevKey = c;
-                task = new TimerTask()
-                {
-                    public void run()
-                    {
-                        System.out.println(c);
-                        cube.move(c + "");
-                        repaint();
-                        taskScheduled = false;
-                    }
-                };
-                taskScheduled = true;
-                timer.schedule(task, 500);
-            }
+            System.out.println(solver.getPLLName());
+            solver.solvePLL();
+            repaint();
+            return;
+        }
+        if ("XYZ".contains(c + ""))
+            c += 32;
+        if (!"RUFLDBMESxyzrufldb'".contains(c + ""))
+            return;
+        long elapsedTime = System.currentTimeMillis() - prevKeyTypedTime;
+        if (elapsedTime < 250 && prevKey != '\'' && prevKey != '2' && (c == prevKey || c == '\''))
+        {
+            moveTask.cancel();
+            char c2 = (c == prevKey ? '2' : '\'');
+            String newMove = "" + prevKey + c2;
+            moveTask = createMoveTimerTask(newMove);
+            prevKey = c2;
+            timer.schedule(moveTask, 250 - elapsedTime);
+        }
+        else if (c != '\'')
+        {
+            moveTask = createMoveTimerTask(c + "");
+            prevKey = c;
+            prevKeyTypedTime = System.currentTimeMillis();
+            timer.schedule(moveTask, 250);
         }
     }
 
-    @Override
+    public TimerTask createMoveTimerTask(String move)
+    {
+        return new TimerTask()
+        {
+            public void run()
+            {
+                cube.move(move);
+                System.out.println(move);
+                repaint();
+            }
+        };
+    }
+
     public void keyPressed(KeyEvent e)
     {
         
     }
 
-    @Override
     public void keyReleased(KeyEvent e)
     {
         

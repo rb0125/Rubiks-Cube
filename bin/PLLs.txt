@@ -1,0 +1,87 @@
+PLL skip
+111 222 333 444
+
+
+Aa Perm
+122 331 243 414
+x L2 D2 L' U' L D2 L' U L' x'
+
+Ab Perm
+142 311 223 434
+x' L2 D2 L U L' D2 L U' L x
+
+F Perm
+132 321 213 444
+R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R
+
+Ga Perm
+122 341 213 434
+R2 U R' U R' U' R U' R2 U' D R' U R D'
+
+Gb Perm
+132 311 243 424
+R' U' R U D' R2 U R' U R U' R U' R2 D
+
+Gc Perm
+132 341 223 414
+R2 U' R U' R U R' U R2 U D' R U' R' D
+
+Gd Perm
+142 331 213 424
+R U R' U' D R2 U' R U' R' U R' U R2 D'
+
+Ja Perm
+112 331 223 444
+x R2 F R F' R U2 r' U r U2 x'
+
+Jb Perm
+122 311 233 444
+R U R' F' R U R' U' R' F R2 U' R'
+
+Ra Perm
+112 321 243 434
+R U' R' U' R U R D R' U' R D' R' U2 R'
+
+Rb Perm
+142 321 233 414
+R2 F R U R U' R' F' R U2 R' U2 R
+
+T Perm
+112 341 233 424
+R U R' U' R' F R2 U' R' U' R U R' F'
+
+E Perm
+123 432 341 214
+x' L' U L D' L' U' L D L' U' L D' L' U L D x
+
+Na Perm
+133 422 311 244
+R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'
+
+Nb Perm
+113 442 331 224
+R' U R U' R' F' U' F R U R' F R' F' R U' R
+
+V Perm
+113 432 321 244
+R' U R' U' y R' F' R2 U' R' U R' F R F
+
+Y Perm
+113 422 341 234
+F R U' R' U' R U R' F' R U R' U' R' F R F'
+
+H Perm
+131 242 313 424
+M2 U M2 U2 M2 U M2
+
+Ua Perm
+121 242 333 414
+M2 U M U2 M' U M2
+
+Ub Perm
+141 212 333 424
+M2 U' M U2 M' U' M2
+
+Z Perm
+141 232 323 414
+M' U M2 U M2 U M' U2 M2
