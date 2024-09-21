@@ -22,7 +22,108 @@ public class CubeSolver
         lastLayerColor = colorScheme.charAt((colorScheme.indexOf("" + crossColor) + 3)%6);
     }
 
-    public int[][] getTopLayer()
+    public void solveOLL()
+    {
+        String oll = getOLL();
+        if (!oll.equals("Invalid OLL"));
+            cube.move(oll);
+    }
+
+    public String getOLL()
+    {
+        int[][] topLayer = getTopLayer();
+        if (topLayer == null)
+            return "Invalid OLL";
+        for (int i = 0; i < topLayer.length; i ++)
+            for (int j = 0; j < topLayer.length; j ++)
+                topLayer[i][j] /= 5;
+        try
+        {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("src" + File.separator + "OLLs.txt")));
+            String ollString, ollMoves;
+            while (reader.readLine() != null)
+            {
+                ollString = "";
+                for (int i = 0; i < 5; i ++)
+                    ollString += reader.readLine() + "\n";
+                ollMoves = reader.readLine();
+                reader.readLine();
+                for (int uMoves = 0; uMoves < 4; uMoves ++)
+                {
+                    String curOll = getTopLayerString(topLayer);
+                    if (curOll.equals(ollString))
+                    {
+                        reader.close();
+                        String preU = getU(uMoves);
+                        return (uMoves > 0 ? "(" + preU + ") " : "") + ollMoves;
+                    }
+                    topLayer = topLayerU(topLayer);
+                }
+            }
+            reader.close();
+        }
+        catch (IOException e)   {   System.out.println("IOException");  }
+        return "Invalid OLL";
+    }
+
+    public String getPLLName()
+    {
+        return getPLL()[0];
+    }
+
+    public String getPLLMoves()
+    {
+        return getPLL()[1];
+    }
+
+    public void solvePLL()
+    {
+        cube.move(getPLLMoves());
+    }
+
+    public String[] getPLL()
+    {
+        int[][] topLayer = getTopLayer();
+        if (topLayer == null)
+            return new String[]{"Invalid PLL", ""};
+        try
+        {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("src" + File.separator + "PLLs.txt")));
+            String pllName, pllString, pllMoves;
+            while ((pllName = reader.readLine()) != null)
+            {
+                pllString = reader.readLine();
+                pllMoves = reader.readLine();
+                reader.readLine();
+                for (int uMoves = 0; uMoves < 4; uMoves ++)
+                {
+                    String front, right, back, left, curPll;
+                    front = "" + topLayer[4][1] + topLayer[4][2] + topLayer[4][3];
+                    right = "" + topLayer[3][4] + topLayer[2][4] + topLayer[1][4];
+                    back = "" + topLayer[0][3] + topLayer[0][2] + topLayer[0][1];
+                    left = "" + topLayer[1][0] + topLayer[2][0] + topLayer[3][0];
+                    curPll = String.format("%s %s %s %s", front, right, back, left);
+
+                    for (int offset = 0; offset < 4; offset ++)
+                    {
+                        String pllStringOffset = offsetPllColors(pllString, offset);
+                        if (curPll.equals(pllStringOffset))
+                        {
+                            reader.close();
+                            String preU = getU(uMoves);
+                            return new String[]{pllName, (uMoves > 0 ? "(" + preU + ") " : "") + pllMoves};
+                        }
+                    }
+                    topLayer = topLayerU(topLayer);
+                }
+            }
+            reader.close();
+        }
+        catch (IOException e)   {  System.out.println("IOException");  }
+        return new String[]{"Invalid PLL", ""};
+    }
+
+    private int[][] getTopLayer()
     {
         int[][] topLayer = new int[5][5];
         String temp = colorScheme.replace("" + colorScheme.charAt((colorScheme.indexOf(lastLayerColor) + 3)%6), "").replace("" + lastLayerColor, "");
@@ -54,89 +155,31 @@ public class CubeSolver
         return topLayer;
     }
 
-    public String getOLL()
+    private int[][] topLayerU(int[][] topLayer)
     {
-        int[][] topLayer = getTopLayer();
-        if (topLayer == null)
-            return "Invalid OLL";
-        String oll = "";
+        int n = 5;
+        int[][] newTopLayer = new int[n][n];
+        for (int i = 0; i < n; i ++)
+            for (int j = 0; j < n; j ++)
+                newTopLayer[i][j] = topLayer[n - j - 1][i];
+        return newTopLayer;
+    }
+
+    private String getTopLayerString(int[][] topLayer)
+    {
+        String topLayerString = "";
         for (int[] row: topLayer)
         {
             for (int x: row)
-                oll += "" + x;
-            oll += "\n";
+                topLayerString += x;
+            topLayerString += "\n";
         }
-        return oll;
+        return topLayerString;
     }
 
-    public String getPLLName()
+    private String getU(int uMoves)
     {
-        return getPLLInfo()[0];
-    }
-
-    public String getPLLMoves()
-    {
-        return getPLLInfo()[1];
-    }
-
-    public void solvePLL()
-    {
-        cube.move(getPLLMoves());
-    }
-
-    public String[] getPLLInfo()
-    {
-        int[][] topLayer = getTopLayer();
-        if (topLayer == null)
-            return new String[]{"Invalid PLL", ""};
-
-        String front, right, back, left;
-        front = "" + topLayer[4][1] + topLayer[4][2] + topLayer[4][3];
-        right = "" + topLayer[3][4] + topLayer[2][4] + topLayer[1][4];
-        back = "" + topLayer[0][3] + topLayer[0][2] + topLayer[0][1];
-        left = "" + topLayer[1][0] + topLayer[2][0] + topLayer[3][0];
-
-        String[] pllStrings = new String[4];
-        pllStrings[0] = String.format("%s %s %s %s", front, right, back, left);
-        pllStrings[1] = String.format("%s %s %s %s", right, back, left, front);
-        pllStrings[2] = String.format("%s %s %s %s", back, left, front, right);
-        pllStrings[3] = String.format("%s %s %s %s", left, front, right, back);
-        
-        for (int i = 0; i < pllStrings.length; i ++)
-            System.out.println(offsetPllString(pllStrings[0], i));
-
-        try
-        {
-            BufferedReader reader = new BufferedReader(new FileReader(new File("src" + File.separator + "PLLs.txt")));
-            String pllName, pllString, pllMoves;
-            while ((pllName = reader.readLine()) != null)
-            {
-                pllString = reader.readLine();
-                pllMoves = reader.readLine();
-                reader.readLine();
-                for (int i = 0; i < pllStrings.length; i ++)
-                {
-                    for (int j = 0; j < 4; j ++)
-                    {
-                        String pllStringOffset = offsetPllString(pllString, j);
-                        if (pllStrings[i].equals(pllStringOffset))
-                        {
-                            reader.close();
-                            String preU = getU(i);
-                            return new String[]{pllName, preU + " " + pllMoves};
-                        }
-                    }
-                }
-            }
-            reader.close();
-        }
-        catch (IOException e){  System.out.println("IOException");  }
-        return new String[]{"Invalid PLL", ""};
-    }
-
-    private String getU(int numU)
-    {
-        switch (numU)
+        switch (uMoves)
         {
             case 0: return "";
             case 1: return "U";
@@ -146,7 +189,7 @@ public class CubeSolver
         }
     }
 
-    public String offsetPllString(String pllString, int offset)
+    public String offsetPllColors(String pllString, int offset)
     {
         String pllStringOffset = "";
         for (int i = 0; i < pllString.length(); i ++)

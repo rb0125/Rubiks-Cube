@@ -3,7 +3,6 @@ import java.util.Stack;
 
 public class Cube
 {
-    // Potentially make HashMap
     private Piece[] pieces;
     private Stack<String> undo, redo;
     private String colorScheme, orientation;
@@ -80,11 +79,11 @@ public class Cube
 
     public boolean move(String moves)
     {
-        if (moves == null)
+        if (moves == null || !balancedParenthesis(moves))
             return false;
         if (moves.length() == 0)
             return true;
-        moves = moves.trim().replaceAll(" {2,}", " ");
+        moves = moves.trim().replaceAll(" {2,}", " ").replaceAll("[\\(\\)]+", "");
         if (!moves.matches("([RUFLDBMESxyzrufldb][2']? )*[RUFLDBMESxyzrufldb][2']?"))
             return false;
         String[] moveStrings = moves.split(" ");
@@ -207,6 +206,22 @@ public class Cube
             }
         }
         return true;
+    }
+
+    private boolean balancedParenthesis(String s)
+    {
+        int count = 0;
+        for (int i = 0; i < s.length(); i ++)
+        {
+            char c = s.charAt(i);
+            if (c == '(')
+                count ++;
+            else if (c == ')')
+                count --;
+            if (count < 0)
+                return false;
+        }
+        return count == 0;
     }
 
     public void reset()

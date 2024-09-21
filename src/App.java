@@ -1,6 +1,14 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
+import java.awt.Color;
+
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,17 +29,24 @@ public class App extends JPanel implements KeyListener
         timer = new Timer();
         prevKey = 0;
         prevKeyTypedTime = 0;
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frameX = (int) screenSize.getWidth();
-        frameY = (int) screenSize.getHeight();
-        // frameX = 1000;
-        // frameY = 600;
 
         JFrame frame = new JFrame();
         frame.add(this);
-        frame.setSize(frameX, frameY);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addKeyListener(this);
+        
+        // GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        // if (device.isFullScreenSupported())
+        //     device.setFullScreenWindow(frame);
+        // // else
+        //     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // frameX = frame.getWidth();
+        // frameY = frame.getHeight();
+        frameX = 1000;
+        frameY = 600;
+        frame.setSize(frameX, frameY);
+
+        cube.move("z2");
         frame.setVisible(true);
     }
 
@@ -149,8 +164,10 @@ public class App extends JPanel implements KeyListener
         char c = e.getKeyChar();
         if (c == ' ')
         {
-            System.out.println(solver.getPLLName());
-            solver.solvePLL();
+            String oll = solver.getOLL();
+            System.out.println(oll);
+            if (!oll.equals("Invalid OLL"))
+                cube.move(oll);
             repaint();
             return;
         }

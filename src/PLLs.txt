@@ -1,4 +1,4 @@
-PLL skip
+PLL Skip
 111 222 333 444
 
 
@@ -9,6 +9,10 @@ x L2 D2 L' U' L D2 L' U L' x'
 Ab Perm
 142 311 223 434
 x' L2 D2 L U L' D2 L U' L x
+
+E Perm
+123 432 341 214
+x' L' U L D' L' U' L D L' U' L D' L' U L D x
 
 F Perm
 132 321 213 444
@@ -30,6 +34,10 @@ Gd Perm
 142 331 213 424
 R U R' U' D R2 U' R U' R' U R' U R2 D'
 
+H Perm
+131 242 313 424
+M2 U M2 U2 M2 U M2
+
 Ja Perm
 112 331 223 444
 x R2 F R F' R U2 r' U r U2 x'
@@ -37,6 +45,14 @@ x R2 F R F' R U2 r' U r U2 x'
 Jb Perm
 122 311 233 444
 R U R' F' R U R' U' R' F R2 U' R'
+
+Na Perm
+133 422 311 244
+R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'
+
+Nb Perm
+113 442 331 224
+R' U R U' R' F' U' F R U R' F R' F' R U' R
 
 Ra Perm
 112 321 243 434
@@ -50,17 +66,13 @@ T Perm
 112 341 233 424
 R U R' U' R' F R2 U' R' U' R U R' F'
 
-E Perm
-123 432 341 214
-x' L' U L D' L' U' L D L' U' L D' L' U L D x
+Ua Perm
+121 242 333 414
+M2 U M U2 M' U M2
 
-Na Perm
-133 422 311 244
-R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'
-
-Nb Perm
-113 442 331 224
-R' U R U' R' F' U' F R U R' F R' F' R U' R
+Ub Perm
+141 212 333 424
+M2 U' M U2 M' U' M2
 
 V Perm
 113 432 321 244
@@ -69,18 +81,6 @@ R' U R' U' y R' F' R2 U' R' U R' F R F
 Y Perm
 113 422 341 234
 F R U' R' U' R U R' F' R U R' U' R' F R F'
-
-H Perm
-131 242 313 424
-M2 U M2 U2 M2 U M2
-
-Ua Perm
-121 242 333 414
-M2 U M U2 M' U M2
-
-Ub Perm
-141 212 333 424
-M2 U' M U2 M' U' M2
 
 Z Perm
 141 232 323 414
